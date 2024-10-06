@@ -1,6 +1,7 @@
 import filter
 import generator
 import matplotlib.pyplot as plt
+import shim_ideal
 
 import optimization
 
@@ -10,14 +11,17 @@ sig2 = []
 g_shim = []
 x = []
 
+f1 = 50
+f2 = 51
+
 f_discret = 4000
 
 def connect(f_discret):
     xx = []
-    for i in range(2000):
+    for i in range(4000):
         xx.append(i / (f_discret))
-        sig1.append(generator.get_sin(5, 50, i, f_discret))
-        sig2.append(generator.get_sin(5, 60, i, f_discret))
+        sig1.append(generator.get_sin(5, f1, i, f_discret))
+        sig2.append(generator.get_sin(5, f2, i, f_discret))
     draw(xx, sig1)
     return sig1, sig2
 
@@ -42,7 +46,7 @@ def shim(f_discret, sig1, sig2):
                 g = 0
         g_shim.append(g)
     draw(x, g_shim)
-    filter.filter_ter(x, g_shim, f_discret, 1.1, 0.003, 3)
+    filter.filter_ter(x, g_shim, f_discret, 0.00025, 0.01, 2)
 
 
 
@@ -63,4 +67,7 @@ def draw(x, y):
 
 
 sig1, sig2 = connect(f_discret)
+shim_i = shim_ideal.generate(f_discret, f1, f2, sig1, sig2)
+
 shim(f_discret, sig1, sig2)
+draw(x, shim_i)
