@@ -10,21 +10,24 @@ sig2 = []
 g_shim = []
 x = []
 
-def connect():
+f_discret = 4000
+
+def connect(f_discret):
     xx = []
-    for i in range(8000):
-        xx.append(i)
-        sig1.append(generator.get_sin(5, 50, i))
-        sig2.append(generator.get_sin(5, 51, i))
-    draw(xx, sig2)
+    for i in range(2000):
+        xx.append(i / (f_discret))
+        sig1.append(generator.get_sin(5, 50, i, f_discret))
+        sig2.append(generator.get_sin(5, 60, i, f_discret))
+    draw(xx, sig1)
+    return sig1, sig2
 
 
 
 
-def shim():
+def shim(f_discret, sig1, sig2):
     g = 0
     for i in range(1, len(sig1), 1):
-        x.append(i/4)
+        x.append(i/f_discret)
         nullable1 = False
         nullable2 = False
         if sig1[i] * sig1[i-1] <= 0:
@@ -39,7 +42,7 @@ def shim():
                 g = 0
         g_shim.append(g)
     draw(x, g_shim)
-    filter.filter_ter(x, g_shim)
+    filter.filter_ter(x, g_shim, f_discret, 1.1, 0.003, 3)
 
 
 
@@ -59,5 +62,5 @@ def draw(x, y):
 
 
 
-connect()
-shim()
+sig1, sig2 = connect(f_discret)
+shim(f_discret, sig1, sig2)
