@@ -3,19 +3,9 @@ from matplotlib import pyplot as plt
 import math
 
 def filter_ter(t, shim, f_discret, K, T, order):
-    cutoff_freq = 50
-    sampling = f_discret
-
-
-    # b, a = butter(order, cutoff_freq / (0.5 * sampling), btype='lowpass')
-    #
-    # filtred = lfilter(b, a, shim)
-
     filtred = shim
     for i in range(order):
         filtred = filter_one(filtred, K, T, t, f_discret)
-
-
     return filtred
 
 def h(K, T, t):
