@@ -11,14 +11,17 @@ sig2 = []
 g_shim = []
 x = []
 
+delta_K = 0.00001
+delta_T = 0.00001
+
 f1 = 50
 f2 = 51
 
 f_discret = 4000
 
-def connect(f_discret):
+def connect(f_discret, f1, f2):
     xx = []
-    for i in range(4000):
+    for i in range(f_discret): #количество точек
         xx.append(i / (f_discret))
         sig1.append(generator.get_sin(5, f1, i, f_discret))
         sig2.append(generator.get_sin(5, f2, i, f_discret))
@@ -28,7 +31,7 @@ def connect(f_discret):
 
 
 
-def shim(f_discret, sig1, sig2):
+def shim(f_discret, sig1, sig2, K, T):
     g = 0
     for i in range(1, len(sig1), 1):
         x.append(i/f_discret)
@@ -45,8 +48,8 @@ def shim(f_discret, sig1, sig2):
             else:
                 g = 0
         g_shim.append(g)
-    draw(x, g_shim)
-    filter.filter_ter(x, g_shim, f_discret, 0.00025, 0.01, 2)
+    # draw(x, g_shim)
+    return filter.filter_ter(x, g_shim, f_discret, K, T, 2)
 
 
 
@@ -66,7 +69,7 @@ def draw(x, y):
 
 
 
-sig1, sig2 = connect(f_discret)
+sig1, sig2 = connect(f_discret, f1, f2)
 shim_i = shim_ideal.generate(f_discret, f1, f2, sig1, sig2)
 
 shim(f_discret, sig1, sig2)

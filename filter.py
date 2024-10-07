@@ -16,12 +16,7 @@ def filter_ter(t, shim, f_discret, K, T, order):
         filtred = filter_one(filtred, K, T, t, f_discret)
 
 
-    plt.plot(t, filtred)
-    plt.title("Синусоидальная функция")
-    plt.xlabel("x")
-    plt.ylabel("y")
-
-    plt.show()
+    return filtred
 
 def h(K, T, t):
     return (K / T) * math.exp(-(t / T))
